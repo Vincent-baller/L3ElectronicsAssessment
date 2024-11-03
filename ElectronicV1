@@ -1,0 +1,50 @@
+// Installing all the components for the circuit.
+#include <LCD-I2C.h>
+#include <Wire.h>
+#include <DHT11.h> 
+ 
+// Defining pins and variables.
+DHT11 dht11(2); 
+LCD_I2C lcd(0x27, 16, 2);
+
+
+void setup() {
+// Initial Component states for when the circuit is powered.
+    Wire.begin();
+    lcd.begin(&Wire);
+    lcd.display();
+    lcd.backlight();
+    Serial.begin(9600);
+}
+
+void loop() {
+//  Setting the initial values to 0 for the DHT11 component, as to provide more accurate readings.
+    int temperature = 0;
+    int humidity = 0;
+
+    int result = dht11.readTemperatureHumidity(temperature, humidity);
+
+// Printing onto the serial monitor.
+    if (result == 0) {
+        Serial.print("Temperature: ");
+        Serial.print(temperature);
+        Serial.print(" °C\tHumidity: ");
+        Serial.print(humidity);
+        Serial.println(" %");
+    } else {
+// If something goes wrong with the reading, an error message will print onto the serial monitor.
+        Serial.println(DHT11::getErrorString(result));
+    }
+
+// Setting up the location of where the text will be.
+    lcd.setCursor(0, 0); 
+// The text for the LCD to display, utilising the DHT11 variable results.
+    lcd.print("Temp:");
+    lcd.print(temperature);
+    lcd.print(" C");
+    lcd.setCursor(0, 1);
+    lcd.print("Humidity:");
+    lcd.print(humidity);
+    lcd.print("%");
+   
+}
