@@ -5,7 +5,7 @@
  
 // Defining pins and variables.
 DHT11 dht11(2); 
-const int backlightDuration = 4000;
+const int backlightDuration = 30000;
 LCD_I2C lcd(0x27, 16, 2);
 const int relayPin = 6;              
 const int buttonPin = 3;               
@@ -90,7 +90,7 @@ void loop() {
 // When the conditions are met for backlightTriggered, it will turn on the backlight.
     if (backlightTriggered) {
     lcd.backlight(); 
-// using the value from the start (4000ms), when the time from when the backlight started exceeds the value of the set duration, the backlight will turn off, and the backlightTriggered variable will be set back to false.
+// using the value from the start (30000ms), when the time from when the backlight started exceeds the value of the set duration, the backlight will turn off, and the backlightTriggered variable will be set back to false.
     if (millis() - backlightStartTime >= backlightDuration) {
       lcd.backlightOff();           
       backlightTriggered = false;       
